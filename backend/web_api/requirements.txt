@@ -1,0 +1,7 @@
+# 说明：Web API 层的最小依赖集合（与核心 RAG 依赖分离，避免干扰现有环境）
+
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+pydantic>=2.7.0
+python-multipart>=0.0.9
+Send2Trash>=1.8.3

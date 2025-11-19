@@ -1,0 +1,17 @@
+* { box-sizing: border-box }
+html, body { height: 100% }
+body { margin: 0; background: #0b0c10; color: #e6e6e6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Microsoft YaHei', sans-serif }
+.status-bar { width: 100%; padding: 10px 16px; background: #101225; color: #7fb3ff; border-bottom: 1px solid #1c2040; position: sticky; top: 0; z-index: 10 }
+.container { display: flex; gap: 24px; padding: 24px }
+.left-pane { flex: 1; display: flex; flex-direction: column; gap: 16px }
+.message-list { display: flex; flex-direction: column; gap: 12px; background: #0f1122; border: 1px solid #1c2040; border-radius: 12px; padding: 16px; min-height: 200px }
+.message { max-width: 80%; padding: 10px 12px; border-radius: 12px; line-height: 1.5 }
+.message.user { align-self: flex-end; background: #1e274a; color: #cfe3ff }
+.message.assistant { align-self: flex-start; background: #0b1b2a; color: #bfe2ff }
+.source-list { background: #0f1122; border: 1px solid #1c2040; border-radius: 12px; padding: 12px; min-height: 120px }
+.source-item { border-bottom: 1px dashed #243061; padding: 8px 0 }
+.source-item:last-child { border-bottom: none }
+.input-area { display: flex; align-items: center; gap: 12px }
+.send-btn { height: 40px; padding: 0 16px; border: none; border-radius: 10px; background: #1c56ff; color: #fff; cursor: pointer }
+.send-btn:hover { background: #1446d3 }
+.hidden { display: none }

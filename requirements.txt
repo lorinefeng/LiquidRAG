@@ -1,0 +1,16 @@
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+pydantic>=2.7.0
+python-multipart>=0.0.9
+send2trash>=1.8.3
+numpy<2
+torch>=2.0.0
+transformers>=4.40.0
+sentence-transformers>=2.6.0
+chromadb>=0.5.3
+PyPDF2>=3.0.0
+markdown>=3.5.0
+python-docx>=0.8.11
+requests>=2.31.0
+tqdm>=4.66.0
+huggingface-hub>=0.24.0

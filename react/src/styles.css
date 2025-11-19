@@ -1,0 +1,276 @@
+:root {
+  --max-input-width: 60vw;
+  --bg-body: #0b0f19;
+  --primary: #402fb5;
+  --secondary: #1677ff;
+  --accent: #cf30aa;
+  --surface-dark: #111318;
+  --text-primary: #ffffff;
+  --text-secondary: #d6d6e6;
+  --bubble-shadow: 0 8px 28px rgba(64,47,181,.35), 0 2px 12px rgba(22,119,255,.25);
+  --bubble-shadow-assist: 0 8px 28px rgba(31,31,31,.45), 0 2px 12px rgba(64,47,181,.25);
+  --transition-fast: 200ms ease;
+  --transition-slow: 400ms cubic-bezier(.22,1,.36,1);
+  --rb-start: #7a001f;
+  --rb-mid: #5a0b3a;
+  --rb-end: #48116a;
+  --rb-speed: 2400ms;
+  --rb-width: 2px;
+  --bottom-safe: 160px;
+  --round: 12px;
+  --round-strong: 24px;
+  --ai-bg-image: none;
+  --user-bg-image: none;
+}
+body { background: var(--bg-body); }
+.header-title { font-weight: 600; font-size: 16px; color: var(--text-primary); }
+.chat-container { max-width: 900px; margin: 0 auto; padding: 16px; }
+.msg { display: flex; margin-bottom: 14px; align-items: flex-end; gap: 8px; }
+.msg .bubble { max-width: 70%; padding: 12px 16px; border-radius: 16px; position: relative; transition: box-shadow var(--transition-slow), transform var(--transition-fast); }
+.msg .bubble .ts { display: block; margin-top: 6px; font-size: 12px; color: var(--text-secondary); opacity: .7; }
+.msg.user { justify-content: flex-end; }
+.msg.user .bubble { color: var(--text-primary); background: radial-gradient(120% 120% at 10% 10%, rgba(207,48,170,.25) 0%, rgba(64,47,181,.35) 45%, rgba(22,119,255,.25) 100%), #0f1020; box-shadow: var(--bubble-shadow); border: 1px solid rgba(64,47,181,.45); }
+.msg.user .bubble:hover { transform: translateY(-1px); box-shadow: 0 10px 34px rgba(64,47,181,.45); }
+.msg.assistant { justify-content: flex-start; }
+.msg.assistant .bubble { color: var(--text-secondary); background: linear-gradient(180deg, rgba(22,23,40,.85), rgba(12,13,24,.85)), radial-gradient(80% 80% at 90% 10%, rgba(22,119,255,.15) 0%, rgba(64,47,181,.25) 60%, rgba(0,0,0,.25) 100%); box-shadow: var(--bubble-shadow-assist); border: 1px solid rgba(31,31,31,.4); }
+.msg.assistant .bubble:hover { transform: translateY(-1px); box-shadow: 0 10px 34px rgba(31,31,31,.55); }
+.msg.assistant::before, .msg.user::after { content:''; width: 44px; height: 44px; border-radius: 50%; flex: 0 0 44px; }
+.msg.assistant::before {
+  background-image: var(--ai-bg-image), radial-gradient(closest-side, #6741d9, #3a3a52);
+  background-position: center center, center center;
+  background-size: cover, auto;
+  box-shadow: 0 4px 16px rgba(64,47,181,.35);
+}
+.msg.user::before { content: none; }
+.msg.user .bubble { order: 1; }
+.msg.user::after {
+  order: 2;
+  background-image: var(--user-bg-image), radial-gradient(closest-side, var(--accent), var(--primary));
+  background-position: center center, center center;
+  background-size: cover, auto;
+  box-shadow: 0 4px 16px rgba(207,48,170,.35);
+}
+.bottom-input { position: fixed; bottom: 0; left: 0; right: 0; padding: 12px 16px; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); border-radius: var(--round-strong); overflow: hidden; transition: border-radius 420ms ease-in-out; }
+.bottom-inner { width: var(--max-input-width); margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.input-row { width: 100%; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; column-gap: 8px; width: 100%; }
+.actions .ant-btn { height: 56px; }
+/* actions容器红蓝双色流动边框 */
+.actions {
+  position: relative;
+  border: var(--rb-width) solid transparent;
+  background: linear-gradient(#0b0f19, #0b0f19) padding-box,
+              linear-gradient(90deg, var(--rb-start) 0%, var(--rb-mid) 50%, var(--rb-end) 100%) border-box;
+  background-size: 100% 100%, 200% 100%;
+  background-position: 0 0, 0 0;
+  animation: rb-flow var(--rb-speed) ease-in-out infinite;
+  will-change: background-position;
+  border-radius: var(--round);
+}
+.status-bar { padding: 4px 12px; color: #9aa4b5; }
+.generating { position: fixed; inset: 0; z-index: 998; pointer-events: none; }
+.logo { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: radial-gradient(closest-side, var(--accent), var(--primary)); margin-right: 8px; box-shadow: 0 6px 22px rgba(207,48,170,.35); }
+.logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.header-avatars { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.header-avatars .avatar { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; background: #12141c; box-shadow: 0 4px 16px rgba(0,0,0,.35); }
+.header-avatars .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* antd按钮主题化 */
+.actions .ant-btn, .actions .ant-btn-primary {
+  position: relative;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+  background: #000;
+  background-image: linear-gradient(#0b0f19, #0b0f19), linear-gradient(90deg, #ff3b3b 0%, #cf30aa 50%, #1677ff 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 6px 18px rgba(64,47,181,.25);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-slow);
+  overflow: hidden;
+}
+.actions .ant-btn > span, .actions .ant-btn-primary > span { position: relative; z-index: 1; }
+.actions .ant-btn::before, .actions .ant-btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: conic-gradient(#000, #402fb5 5%, #000 38%, #000 50%, #cf30aa 60%, #000 87%);
+  filter: blur(26px);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, filter;
+}
+.actions .ant-btn:hover, .actions .ant-btn-primary:hover { background: #151826; }
+.actions .ant-btn:hover::before, .actions .ant-btn-primary:hover::before { opacity: .8; animation: btn-rotate 2s linear infinite; }
+
+@keyframes btn-rotate { 0% { transform: translate(-50%, -50%) rotate(60deg); } 100% { transform: translate(-50%, -50%) rotate(420deg); } }
+.kb-container { max-width: 900px; margin: 0 auto; padding: 16px; }
+.kb-toolbar .ant-input { background: #151826; color: var(--text-primary); border: 1px solid rgba(255,255,255,.08); }
+.kb-toolbar .ant-input::placeholder { color: var(--text-secondary); }
+.ant-table { background: #12141c; color: var(--text-secondary); border-radius: 12px; overflow: hidden; }
+.ant-table-thead .ant-table-cell { background: #161821; color: var(--text-secondary); }
+.ant-table-tbody .ant-table-row:hover > .ant-table-cell { background: rgba(64,47,181,.08); }
+.ant-modal-content { background: #111318; color: var(--text-primary); }
+.ant-modal-header { background: #151826; color: var(--text-primary); }
+.ant-modal-title { color: var(--text-primary); }
+.ant-tabs-nav { justify-content: center; }
+.ant-tabs-nav .ant-tabs-nav-list { gap: 8px; }
+.ant-tabs-tab { margin: 0; }
+
+@media (max-width: 768px) {
+  .actions .ant-btn { height: 48px; }
+  :root { --bottom-safe: 120px; }
+}
+
+/* Tabs 导航容器圆角与光效对齐 */
+.ant-tabs-nav, .ant-tabs-nav-wrap, .ant-tabs-nav .ant-tabs-nav-list {
+  border-radius: var(--round-strong);
+  overflow: hidden;
+  transition: border-radius 420ms ease-in-out;
+}
+
+/* main与header红蓝双色流动边框 */
+.ant-layout-content {
+  border: var(--rb-width) solid transparent;
+  background: linear-gradient(var(--bg-body), var(--bg-body)) padding-box,
+              linear-gradient(90deg, var(--rb-start) 0%, var(--rb-mid) 50%, var(--rb-end) 100%) border-box;
+  background-size: 100% 100%, 200% 100%;
+  background-position: 0 0, 0 0;
+  animation: rb-flow var(--rb-speed) ease-in-out infinite;
+  will-change: background-position;
+  position: relative;
+  overflow-y: auto;
+  min-height: calc(100vh - 64px);
+  padding-bottom: var(--bottom-safe);
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--round);
+  z-index: 0;
+}
+.ant-layout-content::before {
+  content: "";
+  position: fixed;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  width: 46vw;
+  pointer-events: none;
+  background-image: var(--ai-bg-image);
+  background-repeat: no-repeat;
+  background-position: center left;
+  background-size: contain;
+  opacity: .3;
+  filter: blur(6px);
+  z-index: 0;
+  box-shadow: inset -120px 0 180px rgba(0,0,0,.65);
+}
+.ant-layout-content::after {
+  content: "";
+  position: fixed;
+  top: 64px;
+  bottom: 0;
+  right: 0;
+  width: 46vw;
+  pointer-events: none;
+  background-image: var(--user-bg-image);
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: contain;
+  opacity: .3;
+  filter: blur(6px);
+  z-index: 0;
+  box-shadow: inset 120px 0 180px rgba(0,0,0,.65);
+}
+.ant-layout-header {
+  border: var(--rb-width) solid transparent;
+  background: linear-gradient(#0d1220, #0d1220) padding-box,
+              linear-gradient(90deg, var(--rb-start) 0%, var(--rb-mid) 50%, var(--rb-end) 100%) border-box;
+  background-size: 100% 100%, 200% 100%;
+  background-position: 0 0, 100% 0;
+  animation: rb-flow-rev var(--rb-speed) ease-in-out infinite;
+  will-change: background-position;
+  border-radius: var(--round-strong);
+  overflow: hidden;
+  transition: border-radius 420ms ease-in-out;
+}
+
+@keyframes rb-flow { 100% { background-position: 0 0, 100% 0; } }
+@keyframes rb-flow-rev { 100% { background-position: 0 0, -100% 0; } }
+.kb-container .ant-btn, .kb-container .ant-btn-primary, .kb-container .ant-upload .ant-btn {
+  position: relative;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+  background: #000;
+  background-image: linear-gradient(#0b0f19, #0b0f19), linear-gradient(90deg, #ff3b3b 0%, #cf30aa 50%, #1677ff 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 6px 18px rgba(64,47,181,.25);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-slow);
+  overflow: hidden;
+}
+.kb-container .ant-btn > span, .kb-container .ant-btn-primary > span { position: relative; z-index: 1; }
+.kb-container .ant-btn::before, .kb-container .ant-btn-primary::before, .kb-container .ant-upload .ant-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: conic-gradient(#000, #402fb5 5%, #000 38%, #000 50%, #cf30aa 60%, #000 87%);
+  filter: blur(26px);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, filter;
+}
+.kb-container .ant-btn:hover, .kb-container .ant-btn-primary:hover, .kb-container .ant-upload .ant-btn:hover { background: #151826; }
+.kb-container .ant-btn:hover::before, .kb-container .ant-btn-primary:hover::before, .kb-container .ant-upload .ant-btn:hover::before { opacity: .8; animation: btn-rotate 2s linear infinite; }
+.kb-container .ant-btn-dangerous, .kb-container .ant-btn-color-dangerous {
+  background-image: linear-gradient(#0b0f19, #0b0f19), linear-gradient(90deg, #ff3b3b 0%, #cf30aa 50%, #ff7f50 100%);
+}
+.kb-toolbar { position: relative; border-radius: 12px; }
+.kb-toolbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: var(--rb-width) solid transparent;
+  background: linear-gradient(#0b0f19, #0b0f19) padding-box,
+              linear-gradient(90deg, var(--rb-start) 0%, var(--rb-mid) 50%, var(--rb-end) 100%) border-box;
+  background-size: 100% 100%, 200% 100%;
+  background-position: 0 0, 0 0;
+  animation: rb-flow var(--rb-speed) ease-in-out infinite;
+  border-radius: var(--round);
+  pointer-events: none;
+}
+.kb-toolbar .ant-space-item:nth-child(2) .ant-btn,
+.kb-toolbar .ant-space-item:nth-child(2) .ant-btn-primary,
+.kb-toolbar .ant-space-item:nth-child(2) .ant-upload .ant-btn {
+  background-image: linear-gradient(#0b0f19, #0b0f19), linear-gradient(90deg, #ff3b3b 0%, #ff7f50 50%, #ff3b3b 100%);
+}
+.kb-toolbar .ant-space-item:nth-child(2) .ant-btn::before,
+.kb-toolbar .ant-space-item:nth-child(2) .ant-btn-primary::before,
+.kb-toolbar .ant-space-item:nth-child(2) .ant-upload .ant-btn::before {
+  background: conic-gradient(#000, #ff3b3b 5%, #000 38%, #000 50%, #ff7f50 60%, #000 87%);
+}
+
+.kb-toolbar .ant-space-item:nth-child(3) .ant-btn,
+.kb-toolbar .ant-space-item:nth-child(3) .ant-btn-primary,
+.kb-toolbar .ant-space-item:nth-child(3) .ant-upload .ant-btn {
+  background-image: linear-gradient(#0b0f19, #0b0f19), linear-gradient(90deg, var(--accent) 0%, var(--primary) 50%, var(--accent) 100%);
+}
+.kb-toolbar .ant-space-item:nth-child(3) .ant-btn::before,
+.kb-toolbar .ant-space-item:nth-child(3) .ant-btn-primary::before,
+.kb-toolbar .ant-space-item:nth-child(3) .ant-upload .ant-btn::before {
+  background: conic-gradient(#000, var(--primary) 5%, #000 38%, #000 50%, var(--accent) 60%, #000 87%);
+}
+
+.kb-toolbar .ant-space-item:nth-child(5) .ant-btn,
+.kb-toolbar .ant-space-item:nth-child(5) .ant-btn-primary,
+.kb-toolbar .ant-space-item:nth-child(5) .ant-upload .ant-btn {
+  background-image: linear-gradient(#0b0f19, #0b0f19), linear-gradient(90deg, #1677ff 0%, #40a9ff 50%, #1677ff 100%);
+}
+.kb-toolbar .ant-space-item:nth-child(5) .ant-btn::before,
+.kb-toolbar .ant-space-item:nth-child(5) .ant-btn-primary::before,
+.kb-toolbar .ant-space-item:nth-child(5) .ant-upload .ant-btn::before {
+  background: conic-gradient(#000, #1677ff 5%, #000 38%, #000 50%, #40a9ff 60%, #000 87%);
+}
