@@ -1,0 +1,16 @@
+{
+  "LiquidAI/LFM2-1.2B": {
+    "model_id": "LiquidAI/LFM2-1.2B",
+    "cache_path": "E:\\AI\\RAG_system\\models\\LiquidAI_LFM2-1.2B",
+    "download_time": "2025-11-16T13:01:44.046550",
+    "file_size": 2345556208,
+    "file_count": 21,
+    "last_accessed": "2025-11-16T13:01:44.046550",
+    "access_count": 2,
+    "checksum": "63021981fffd1dc2209f58f61d646416",
+    "config_hash": null,
+    "is_valid": true,
+    "load_time": 2.8618619441986084,
+    "device_map": "{'': 'cuda:0'}"
+  }
+}
