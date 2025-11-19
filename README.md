@@ -1,7 +1,7 @@
 # LiquidRAG — 本地 RAG 交互系统（Windows 11）
 
 LiquidRAG 是一个在 Windows 11 上优化的本地 RAG（检索增强生成）问答系统。它将本地 LLM（LFM2‑1.2B）与高质量嵌入模型（Qwen3‑Embedding‑0.6B）和本地向量库（ChromaDB）结合，实现“离线检索 + 生成”的完整闭环，不依赖任何外部推理 API。
-
+![alt text]({9347C137-75A8-4F8C-85C8-8BDBF83BC6F0}.png)
 ## 功能特性
 - 智能检索：基于嵌入向量的相似度搜索，支持 Markdown/PDF/Word/TXT
 - 语义嵌入：Qwen3‑Embedding‑0.6B 本地化向量化，归一化与批量编码
